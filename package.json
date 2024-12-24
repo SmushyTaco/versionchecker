@@ -17,7 +17,7 @@
     "url": "https://github.com/SmushyTaco/versionchecker/issues"
   },
   "bin": {
-    "versionchecker": "./dist/index.js"
+    "versionchecker": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
