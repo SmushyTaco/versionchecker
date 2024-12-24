@@ -4,7 +4,7 @@ A nice alternative to `npm outdated`
 
 ## Installation
 ```bash
-npm install versionchecker -g
+npm install @smushytaco/versionchecker -g
 ```
 
 ## Usage
