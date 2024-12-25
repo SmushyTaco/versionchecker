@@ -1,6 +1,6 @@
 {
   "name": "@smushytaco/versionchecker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A version checker like npm outdated but better",
   "type": "module",
   "author": {
