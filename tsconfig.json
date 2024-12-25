@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es2023",
-    "module": "node16",
+    "target": "esnext",
+    "module": "nodenext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "nodenext",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist"
   },
   "include": [
-    "src/index.ts"
+    "src"
   ]
 }
