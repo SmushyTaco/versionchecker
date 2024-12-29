@@ -1,6 +1,6 @@
 {
   "name": "@smushytaco/versionchecker",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A version checker like npm outdated but better",
   "type": "module",
   "author": {
@@ -20,8 +20,8 @@
     "versionchecker": "dist/index.mjs"
   },
   "scripts": {
-    "clean": "del-cli dist",
-    "build": "npm run clean && npx tsx esbuild.ts",
+    "clean": "npx del-cli dist",
+    "build": "npm run clean && npx vite build",
     "prepare": "npm run build",
     "start": "node ./dist/index.mjs"
   },
@@ -58,8 +58,8 @@
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
     "typescript-eslint": "^8.18.2",
-    "tsx": "^4.19.2",
-    "esbuild": "^0.24.2",
+    "vite": "^6.0.6",
+    "vite-plugin-tsc-transpile": "^1.0.2",
     "globals": "^15.14.0",
     "del-cli": "^6.0.0"
   }

@@ -146,4 +146,5 @@ const checkOverrides = async (): Promise<void> => {
     }
 };
 
-await checkOverrides();
+// noinspection JSIgnoredPromiseFromCall
+checkOverrides();
