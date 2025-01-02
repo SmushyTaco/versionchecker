@@ -14,7 +14,7 @@ export default defineConfig({
             output: {
                 entryFileNames: 'index.mjs'
             },
-            external: ['fs', 'chalk', 'pacote', 'semver', 'table']
+            external: ['fs', 'picocolors', 'pacote', 'semver', 'table']
         },
         sourcemap: true,
         minify: false

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { readFileSync } from 'fs';
-import chalk from 'chalk';
+import pc from 'picocolors';
 import pacote from 'pacote';
 import semver from 'semver';
 import { table, TableUserConfig } from 'table';
@@ -29,7 +29,7 @@ if (
     !packageJson.dependencies &&
     !packageJson.devDependencies
 ) {
-    console.log(chalk.yellow('Nothing to check in this package.json.'));
+    console.log(pc.yellow('Nothing to check in this package.json.'));
     process.exit(0);
 }
 
@@ -50,7 +50,7 @@ const getWantedVersion = async (
     } catch (err) {
         if (err instanceof Error) {
             console.error(
-                chalk.red(
+                pc.red(
                     `Failed to fetch wanted version for ${pkg}: ${err.message}`
                 )
             );
@@ -86,9 +86,7 @@ const checkOverrides = async (): Promise<void> => {
         } catch (err) {
             if (err instanceof Error) {
                 console.error(
-                    chalk.red(
-                        `Failed to fetch version for ${pkg}: ${err.message}`
-                    )
+                    pc.red(`Failed to fetch version for ${pkg}: ${err.message}`)
                 );
             }
         }
@@ -97,52 +95,52 @@ const checkOverrides = async (): Promise<void> => {
     if (outdated.length) {
         const tableData: string[][] = [
             [
-                chalk.bold('Package'),
-                chalk.bold('Current'),
-                chalk.bold('Wanted'),
-                chalk.bold('Latest'),
-                chalk.bold('Location')
+                pc.bold('Package'),
+                pc.bold('Current'),
+                pc.bold('Wanted'),
+                pc.bold('Latest'),
+                pc.bold('Location')
             ]
         ];
 
         outdated.forEach(
             ({ package: pkg, current, wanted, latest, location }) => {
                 tableData.push([
-                    chalk.blue(pkg),
-                    chalk.green(current),
-                    chalk.yellow(wanted ?? 'N/A'),
-                    chalk.red(latest),
-                    chalk.gray(location)
+                    pc.blue(pkg),
+                    pc.green(current),
+                    pc.yellow(wanted ?? 'N/A'),
+                    pc.red(latest),
+                    pc.gray(location)
                 ]);
             }
         );
 
         const tableConfig: TableUserConfig = {
             border: {
-                topBody: chalk.gray('─'),
-                topJoin: chalk.gray('┬'),
-                topLeft: chalk.gray('┌'),
-                topRight: chalk.gray('┐'),
+                topBody: pc.gray('─'),
+                topJoin: pc.gray('┬'),
+                topLeft: pc.gray('┌'),
+                topRight: pc.gray('┐'),
 
-                bottomBody: chalk.gray('─'),
-                bottomJoin: chalk.gray('┴'),
-                bottomLeft: chalk.gray('└'),
-                bottomRight: chalk.gray('┘'),
+                bottomBody: pc.gray('─'),
+                bottomJoin: pc.gray('┴'),
+                bottomLeft: pc.gray('└'),
+                bottomRight: pc.gray('┘'),
 
-                bodyLeft: chalk.gray('│'),
-                bodyRight: chalk.gray('│'),
-                bodyJoin: chalk.gray('│'),
+                bodyLeft: pc.gray('│'),
+                bodyRight: pc.gray('│'),
+                bodyJoin: pc.gray('│'),
 
-                joinBody: chalk.gray('─'),
-                joinLeft: chalk.gray('├'),
-                joinRight: chalk.gray('┤'),
-                joinJoin: chalk.gray('┼')
+                joinBody: pc.gray('─'),
+                joinLeft: pc.gray('├'),
+                joinRight: pc.gray('┤'),
+                joinJoin: pc.gray('┼')
             }
         };
 
         console.log(table(tableData, tableConfig));
     } else {
-        console.log(chalk.green('All packages are up to date.'));
+        console.log(pc.green('All packages are up to date.'));
     }
 };
 
