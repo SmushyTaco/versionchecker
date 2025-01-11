@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
 import pc from 'picocolors';
 import pacote from 'pacote';
 import semver from 'semver';
@@ -21,7 +21,7 @@ interface OutdatedPackage {
 }
 
 const packageJson: PackageJson = JSON.parse(
-    readFileSync('package.json', 'utf-8')
+    readFileSync('package.json', 'utf8')
 );
 
 if (
@@ -40,59 +40,61 @@ const devDependencies: Record<string, string> =
 const outdated: OutdatedPackage[] = [];
 
 const getWantedVersion = async (
-    pkg: string,
+    package_: string,
     range: string
-): Promise<string | null> => {
+): Promise<string | undefined> => {
     try {
-        const manifest = await pacote.packument(pkg);
+        const manifest = await pacote.packument(package_);
         const versions = Object.keys(manifest.versions);
-        return semver.maxSatisfying(versions, range);
-    } catch (err) {
-        if (err instanceof Error) {
+        return semver.maxSatisfying(versions, range) ?? undefined;
+    } catch (error) {
+        if (error instanceof Error) {
             console.error(
                 pc.red(
-                    `Failed to fetch wanted version for ${pkg}: ${err.message}`
+                    `Failed to fetch wanted version for ${package_}: ${error.message}`
                 )
             );
         }
-        return null;
+        return undefined;
     }
 };
 
 const checkOverrides = async (): Promise<void> => {
-    for (const [pkg, version] of [
+    for (const [package_, version] of [
         ...Object.entries(overrides),
         ...Object.entries(dependencies),
         ...Object.entries(devDependencies)
     ]) {
         try {
-            const manifest = await pacote.manifest(pkg);
+            const manifest = await pacote.manifest(package_);
             const latestVersion = manifest.version;
 
-            const wantedVersion = await getWantedVersion(pkg, version);
+            const wantedVersion = await getWantedVersion(package_, version);
 
             if (
                 !semver.satisfies(latestVersion, version) ||
                 !version.endsWith(latestVersion)
             ) {
                 outdated.push({
-                    package: pkg,
+                    package: package_,
                     current: version,
                     wanted: wantedVersion ?? version,
                     latest: latestVersion,
-                    location: `node_modules/${pkg}`
+                    location: `node_modules/${package_}`
                 });
             }
-        } catch (err) {
-            if (err instanceof Error) {
+        } catch (error) {
+            if (error instanceof Error) {
                 console.error(
-                    pc.red(`Failed to fetch version for ${pkg}: ${err.message}`)
+                    pc.red(
+                        `Failed to fetch version for ${package_}: ${error.message}`
+                    )
                 );
             }
         }
     }
 
-    if (outdated.length) {
+    if (outdated.length > 0) {
         const tableData: string[][] = [
             [
                 pc.bold('Package'),
@@ -103,17 +105,21 @@ const checkOverrides = async (): Promise<void> => {
             ]
         ];
 
-        outdated.forEach(
-            ({ package: pkg, current, wanted, latest, location }) => {
-                tableData.push([
-                    pc.blue(pkg),
-                    pc.green(current),
-                    pc.yellow(wanted ?? 'N/A'),
-                    pc.red(latest),
-                    pc.gray(location)
-                ]);
-            }
-        );
+        for (const {
+            package: package_,
+            current,
+            wanted,
+            latest,
+            location
+        } of outdated) {
+            tableData.push([
+                pc.blue(package_),
+                pc.green(current),
+                pc.yellow(wanted ?? 'N/A'),
+                pc.red(latest),
+                pc.gray(location)
+            ]);
+        }
 
         const tableConfig: TableUserConfig = {
             border: {
@@ -144,5 +150,4 @@ const checkOverrides = async (): Promise<void> => {
     }
 };
 
-// noinspection JSIgnoredPromiseFromCall
-checkOverrides();
+await checkOverrides();

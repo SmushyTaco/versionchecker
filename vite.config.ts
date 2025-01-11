@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite';
 import viteTscPlugin from 'vite-plugin-tsc-transpile';
-import { fileURLToPath } from 'url';
-import path from 'path';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 export default defineConfig({
     build: {
+        target: 'esnext',
         outDir: 'dist',
         rollupOptions: {
             input: path.resolve(
@@ -14,7 +15,7 @@ export default defineConfig({
             output: {
                 entryFileNames: 'index.mjs'
             },
-            external: ['fs', 'picocolors', 'pacote', 'semver', 'table']
+            external: ['node:fs', 'picocolors', 'pacote', 'semver', 'table']
         },
         sourcemap: true,
         minify: false
