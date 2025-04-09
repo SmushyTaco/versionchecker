@@ -1,6 +1,6 @@
 {
   "name": "@smushytaco/versionchecker",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "private": false,
   "description": "A version checker like npm outdated but better",
   "keywords": [
@@ -57,7 +57,7 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
     "vite": "^6.2.5",
-    "vite-plugin-tsc-transpile": "^1.0.5"
+    "vite-plugin-tsc-transpile": "^1.0.6"
   },
   "engines": {
     "node": ">=22.12.0",
